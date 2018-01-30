@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title> Vai ter site sim, OTÁRIO </title>
+    <style type="text/css">
+        body {
+            box-sizing: border-box;
+            text-align: center;
+            margin: 0;
+        }
+        input {
+            border: 1px solid #d0d0d0;
+            outline: 0;
+            padding: 5px;
+        }
+        input:focus, input:active {
+            border: 1px solid #1a1a1a;
+        }
+        img {
+            max-width: 90%;
+        }
+    </style>
+</head>
+<body onload="init();">
+    <h1> Choque de Cultura Finder </h1>
+    <input id="input" type="text"/>
+    <ul id="list"></ul>
+    <script type="text/javascript">
+        var list = document.getElementById("list");
+        var input = document.getElementById("input");
+        var old_val = "";
+        var memes = [
+            {
+                keywords: "julinho da van o filme nao tem um bruno de luca"
+                + " supla faustao sergio mallandro conrado",
+                src: "/resources/choque/1.00.png"
+            },
+            {
+                keywords: "rogerinho do inga confuso que eoq pistola puto"
+                + " irritado",
+                src: "/resources/choque/1.01.png"
+            },
+            {
+                keywords: "renan hoje em dia e eh tudo celular",
+                src: "/resources/choque/1.02.png"
+            },
+            {
+                keywords: "maurilio na minha opiniao e eh golpe",
+                src: "/resources/choque/1.03.png"
+            },
+            {
+                keywords: "julinho da van renan maurilio ele era"
+                + " uma crianca linda mas agora e eh um adulto esquisito",
+                src: "/resources/choque/1.04.png"
+            },
+            {
+                keywords: "maurilio o nome disso ai e eh spin off spin-off",
+                src: "/resources/choque/1.05.png"
+            },
+            {
+                keywords: "rogerinho do inga confuso que eoq pistola puto"
+                + " irritado",
+                src: "/resources/choque/1.06.png"
+            },
+            {
+                keywords: "rogerinho do inga confuso que eoq pistola puto"
+                + " irritado me mata leva deus reflete refletindo",
+                src: "/resources/choque/1.07.png"
+            },
+            {
+                keywords: "julinho da van maurilio ta ligado spin off"
+                + " spin-off",
+                src: "/resources/choque/1.08.png"
+            },
+            {
+                keywords: "julinho da van eu nao vi o filme mas"
+                + " vi se fosse voce 2 dois",
+                src: "/resources/choque/1.09.png"
+            },
+            {
+                keywords: "renan ele tem talento pra isso",
+                src: "/resources/choque/1.10.png"
+            },
+            {
+                keywords: "julinho da van maurilio me permite um protesto",
+                src: "/resources/choque/1.11.png"
+            },
+            {
+                keywords: "julinho da van absurdo",
+                src: "/resources/choque/1.12.png"
+            },
+            {
+                keywords: "julinho da van e eh tudo computador essa porra"
+                + " esta saporra",
+                src: "/resources/choque/2.00.png"
+            },
+            {
+                keywords: "rogerinho do inga nao e eh um transformers ne"
+                + " mas bom filme",
+                src: "/resources/choque/2.01.png"
+            },
+            {
+                keywords: "rogerinho do inga pra mim isso ai e eh droga",
+                src: "/resources/choque/2.02.png"
+            },
+            {
+                keywords: "rogerinho do inga infelizmente vou ter que falar"
+                + " isso aqui",
+                src: "/resources/choque/2.03.png"
+            },
+            {
+                keywords: "rogerinho do inga isso ai e eh maconha meu irmao",
+                src: "/resources/choque/2.04.png"
+            },
+            {
+                keywords: "julinho da van muito muita dialogo fala",
+                src: "/resources/choque/2.05.png"
+            },
+            {
+                keywords: "maurilio muita crianca dentro da sala",
+                src: "/resources/choque/2.06.png"
+            },
+            {
+                keywords: "renan so magia top rogerinho",
+                src: "/resources/choque/2.07.png"
+            },
+            {
+                keywords: "julinho da van renan nem existe isso ouve"
+                + " o que voce ta falando",
+                src: "/resources/choque/2.08.png"
+            },
+            {
+                keywords: "rogerinho do inga nao vem falar de som aqui",
+                src: "/resources/choque/2.09.png"
+            },
+            {
+                keywords: "renan infelizmente atropelei um tamandua",
+                src: "/resources/choque/2.10.png"
+            },
+            {
+                keywords: "rogerinho do inga achou errado otario",
+                src: "/resources/choque/3.00.png"
+            },
+            {
+                keywords: "julinho da van maurilio a justica e eh muito"
+                + " injusta ne rogerinho",
+                src: "/resources/choque/3.01.png"
+            },
+            {
+                keywords: "rogerinho tem que acabar a justica",
+                src: "/resources/choque/3.02.png"
+            },
+            {
+                keywords: "maurilio perplecto perplexo confuso que eoq",
+                src: "/resources/choque/3.03.png"
+            },
+            {
+                keywords: "maurilio um filme maravilhoso magico",
+                src: "/resources/choque/3.04.png"
+            },
+            {
+                keywords: "julinho da van me vejo obrigado a concordar"
+                + " com o palestrinha",
+                src: "/resources/choque/3.05.png"
+            },
+            {
+                keywords: "julinho da van falo com tranquilidade",
+                src: "/resources/choque/3.06.png"
+            },
+            {
+                keywords: "julinho da van cinema e eh explosao"
+                + " carro mulherio",
+                src: "/resources/choque/3.07.png"
+            },
+            {
+                keywords: "julinho da van mete o filme na mao de do"
+                + " vin diesel e fala dirige",
+                src: "/resources/choque/3.08.png"
+            },
+            {
+                keywords: "renan e eh drone que faz isso ai",
+                src: "/resources/choque/3.09.png"
+            },
+            {
+                keywords: "rogerinho o filme veio sem ideia nenhuma",
+                src: "/resources/choque/3.10.png"
+            },
+            {
+                keywords: "rogerinho o cinema hoje e eh uma industria",
+                src: "/resources/choque/3.11.png"
+            }
+            /* mais a ser adicionado */
+        ];
+
+        function clear(el) {
+            while(el.firstChild)
+                el.removeChild(el.firstChild);
+            return el.children.length;
+        }
+
+        function init() {
+            /* inicializar! */
+        }
+
+        input.oninput = input.onchange = input.onkeypress = function(e) {
+            if(input.value === old_val) return;
+            old_val = input.value;
+            var cur_val = input.value.toLowerCase()
+                .replace(/[àáâãä]/g, "a")
+                .replace(/[èéêẽë]/g, "e")
+                .replace(/[ìíîĩï]/g, "i")
+                .replace(/[òóôõö]/g, "o")
+                .replace(/[ùúûũü]/g, "u")
+                .replace(/[^A-Z a-z0-9]/g, "").trim();
+            console.info("|"+cur_val + "|");
+
+            var input_words = [];
+            var cur_val_split = cur_val.split(" ");
+            for(var z = 0; z < cur_val_split.length; z++) {
+                if(cur_val_split[z].length > 0)
+                    input_words.push(cur_val_split[z])
+            }
+
+            clear(list);
+            if(input_words.length <= 0) return;
+
+            for(var w = 0; w < input_words.length; w++) {
+                for(var i = 0; i < memes.length; i++) {
+                    if(memes[i].keywords.indexOf(input_words[w])+1) {
+                        var img = document.createElement("img");
+                        img.src = memes[i].src;
+                        list.appendChild(img);
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
