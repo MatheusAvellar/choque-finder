@@ -3,192 +3,263 @@
 <head>
     <meta charset="utf-8"/>
     <title> Vai ter site sim, OTÁRIO </title>
+    <link href="https://fonts.googleapis.com/css?family=Asap:400,600|Lobster+Two:400i" rel="stylesheet"/>
     <style type="text/css">
-        body {
+        * {
+            margin: 0;
+            outline: 0;
+            padding: 0;
+            list-style: none;
+            font-family: "Asap", sans-serif;
+            vertical-align: middle;
             box-sizing: border-box;
+        }
+        html, body {
+            min-height: 90%;
+            height: 90%;
+        }
+        body {
             text-align: center;
             margin: 0;
+            color: #f94f01;
+            overflow-y: scroll;
+            font-size: 0;
         }
-        input {
+        #header {
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+            line-height: 1;
+        }
+        h1 {
+            font-size: 50px;;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        h1 > div {
+            text-shadow: none;
+            text-transform: lowercase;
+            font-family: "Lobster Two";
+        }
+        #input[data-mode="manual"] {
+            width: 20%;
+        }
+        #input[data-mode="auto"] {
+            width: calc(20% + 50px)
+        }
+        #submit[data-mode="manual"] {
+            width: 50px;
+        }
+        #submit[data-mode="auto"] {
+            display: none;
+        }
+        input[type="text"],
+        input[type="button"] {
             border: 1px solid #d0d0d0;
             outline: 0;
             padding: 5px;
         }
-        input:focus, input:active {
+        input[type="text"]:focus,
+        input[type="text"]:active,
+        input[type="button"]:focus,
+        input[type="button"]:active {
             border: 1px solid #1a1a1a;
+        }
+        .division {
+            font-size: 16px;
+            margin: 10px 0 30px 0;
         }
         img {
             max-width: 90%;
+            min-height: 300px;
+        }
+        #list:empty {
+            margin-top: 20%;
+        }
+        #list:empty::after {
+            content: "Nada para ver aqui!";
+            font-size: 16px;
+            padding: 20px 40px;
+            border: 2px dashed;
+            color: #b0b0b0;
         }
     </style>
 </head>
 <body onload="init();">
-    <h1> Choque de Cultura Finder </h1>
-    <input id="input" type="text"/>
+    <div id="header">
+        <h1> Choque de Cultura <div>Finder</div> </h1>
+    </div>
+    <input id="input" type="text" data-mode="manual"/>
+    <input id="submit" type="button" value="Find!" data-mode="manual"/>
+    <div class="division">
+        <input id="auto_search" type="checkbox" />
+        <span> Pesquisar enquanto você digita </span>
+    </div>
     <ul id="list"></ul>
     <script type="text/javascript">
-        var list = document.getElementById("list");
-        var input = document.getElementById("input");
+        var list;
+        var input;
+        var auto_search;
         var old_val = "";
         var memes = [
             {
                 keywords: "julinho da van o filme nao tem um bruno de luca"
                 + " supla faustao sergio mallandro conrado",
-                src: "/resources/choque/1.00.png"
+                src: "1.00.png"
             },
             {
                 keywords: "rogerinho do inga confuso que eoq pistola puto"
                 + " irritado",
-                src: "/resources/choque/1.01.png"
+                src: "1.01.png"
             },
             {
                 keywords: "renan hoje em dia e eh tudo celular",
-                src: "/resources/choque/1.02.png"
+                src: "1.02.png"
             },
             {
-                keywords: "maurilio na minha opiniao e eh golpe",
-                src: "/resources/choque/1.03.png"
+                keywords: "maurilio dos anjos na minha opiniao e eh golpe",
+                src: "1.03.png"
             },
             {
-                keywords: "julinho da van renan maurilio ele era"
+                keywords: "julinho da van renan maurilio dos anjos ele era"
                 + " uma crianca linda mas agora e eh um adulto esquisito",
-                src: "/resources/choque/1.04.png"
+                src: "1.04.png"
             },
             {
-                keywords: "maurilio o nome disso ai e eh spin off spin-off",
-                src: "/resources/choque/1.05.png"
+                keywords: "maurilio dos anjos o nome disso ai e eh spin off spin-off",
+                src: "1.05.png"
             },
             {
                 keywords: "rogerinho do inga confuso que eoq pistola puto"
                 + " irritado",
-                src: "/resources/choque/1.06.png"
+                src: "1.06.png"
             },
             {
                 keywords: "rogerinho do inga confuso que eoq pistola puto"
                 + " irritado me mata leva deus reflete refletindo",
-                src: "/resources/choque/1.07.png"
+                src: "1.07.png"
             },
             {
-                keywords: "julinho da van maurilio ta ligado spin off"
+                keywords: "julinho da van maurilio dos anjos ta ligado spin off"
                 + " spin-off",
-                src: "/resources/choque/1.08.png"
+                src: "1.08.png"
             },
             {
                 keywords: "julinho da van eu nao vi o filme mas"
                 + " vi se fosse voce 2 dois",
-                src: "/resources/choque/1.09.png"
+                src: "1.09.png"
             },
             {
                 keywords: "renan ele tem talento pra isso",
-                src: "/resources/choque/1.10.png"
+                src: "1.10.png"
             },
             {
-                keywords: "julinho da van maurilio me permite um protesto",
-                src: "/resources/choque/1.11.png"
+                keywords: "julinho da van maurilio dos anjos me permite um protesto",
+                src: "1.11.png"
             },
             {
                 keywords: "julinho da van absurdo",
-                src: "/resources/choque/1.12.png"
+                src: "1.12.png"
             },
             {
                 keywords: "julinho da van e eh tudo computador essa porra"
                 + " esta saporra",
-                src: "/resources/choque/2.00.png"
+                src: "2.00.png"
             },
             {
                 keywords: "rogerinho do inga nao e eh um transformers ne"
                 + " mas bom filme",
-                src: "/resources/choque/2.01.png"
+                src: "2.01.png"
             },
             {
                 keywords: "rogerinho do inga pra mim isso ai e eh droga",
-                src: "/resources/choque/2.02.png"
+                src: "2.02.png"
             },
             {
                 keywords: "rogerinho do inga infelizmente vou ter que falar"
                 + " isso aqui",
-                src: "/resources/choque/2.03.png"
+                src: "2.03.png"
             },
             {
                 keywords: "rogerinho do inga isso ai e eh maconha meu irmao",
-                src: "/resources/choque/2.04.png"
+                src: "2.04.png"
             },
             {
                 keywords: "julinho da van muito muita dialogo fala",
-                src: "/resources/choque/2.05.png"
+                src: "2.05.png"
             },
             {
-                keywords: "maurilio muita crianca dentro da sala",
-                src: "/resources/choque/2.06.png"
+                keywords: "maurilio dos anjos muita crianca dentro da sala",
+                src: "2.06.png"
             },
             {
                 keywords: "renan so magia top rogerinho",
-                src: "/resources/choque/2.07.png"
+                src: "2.07.png"
             },
             {
                 keywords: "julinho da van renan nem existe isso ouve"
                 + " o que voce ta falando",
-                src: "/resources/choque/2.08.png"
+                src: "2.08.png"
             },
             {
                 keywords: "rogerinho do inga nao vem falar de som aqui",
-                src: "/resources/choque/2.09.png"
+                src: "2.09.png"
             },
             {
                 keywords: "renan infelizmente atropelei um tamandua",
-                src: "/resources/choque/2.10.png"
+                src: "2.10.png"
             },
             {
                 keywords: "rogerinho do inga achou errado otario",
-                src: "/resources/choque/3.00.png"
+                src: "3.00.png"
             },
             {
-                keywords: "julinho da van maurilio a justica e eh muito"
+                keywords: "julinho da van maurilio dos anjos a justica e eh muito"
                 + " injusta ne rogerinho",
-                src: "/resources/choque/3.01.png"
+                src: "3.01.png"
             },
             {
                 keywords: "rogerinho tem que acabar a justica",
-                src: "/resources/choque/3.02.png"
+                src: "3.02.png"
             },
             {
-                keywords: "maurilio perplecto perplexo confuso que eoq",
-                src: "/resources/choque/3.03.png"
+                keywords: "maurilio dos anjos perplecto perplexo confuso que eoq",
+                src: "3.03.png"
             },
             {
-                keywords: "maurilio um filme maravilhoso magico",
-                src: "/resources/choque/3.04.png"
+                keywords: "maurilio dos anjos um filme maravilhoso magico",
+                src: "3.04.png"
             },
             {
                 keywords: "julinho da van me vejo obrigado a concordar"
                 + " com o palestrinha",
-                src: "/resources/choque/3.05.png"
+                src: "3.05.png"
             },
             {
                 keywords: "julinho da van falo com tranquilidade",
-                src: "/resources/choque/3.06.png"
+                src: "3.06.png"
             },
             {
                 keywords: "julinho da van cinema e eh explosao"
                 + " carro mulherio",
-                src: "/resources/choque/3.07.png"
+                src: "3.07.png"
             },
             {
                 keywords: "julinho da van mete o filme na mao de do"
                 + " vin diesel e fala dirige",
-                src: "/resources/choque/3.08.png"
+                src: "3.08.png"
             },
             {
                 keywords: "renan e eh drone que faz isso ai",
-                src: "/resources/choque/3.09.png"
+                src: "3.09.png"
             },
             {
                 keywords: "rogerinho o filme veio sem ideia nenhuma",
-                src: "/resources/choque/3.10.png"
+                src: "3.10.png"
             },
             {
                 keywords: "rogerinho o cinema hoje e eh uma industria",
-                src: "/resources/choque/3.11.png"
+                src: "3.11.png"
             }
             /* mais a ser adicionado */
         ];
@@ -200,11 +271,47 @@
         }
 
         function init() {
-            /* inicializar! */
+            list = document.getElementById("list");
+            input = document.getElementById("input");
+            auto_search = document.getElementById("auto_search");
+
+            input.oninput = input.onchange = input.onkeypress = show_results;
+            submit.onclick = show_results;
+
+            auto_search.onclick = function(e) {
+                if(auto_search.checked)
+                    submit.dataset.mode = input.dataset.mode = "auto"
+                else
+                    submit.dataset.mode = input.dataset.mode = "manual"
+            }
         }
 
-        input.oninput = input.onchange = input.onkeypress = function(e) {
+        function uniq(a) {
+            // Thanks to georg for the snippet:
+            // https://stackoverflow.com/a/9229821/4824627
+            var seen = {};
+            var out = [];
+            var len = a.length;
+            var j = 0;
+            for(var i = 0; i < len; i++) {
+                var item = a[i];
+                if(seen[item] !== 1) {
+                   seen[item] = 1;
+                   out[j++] = item;
+                }
+            }
+            return out;
+        }
+
+        function show_results(e) {
             if(input.value === old_val) return;
+            if(!(e.which === 13
+             || e.keyCode === 13
+             || e.charCode === 13
+             || e.key === "Enter")
+            && !auto_search.checked
+            && e.type != "click") return;
+
             old_val = input.value;
             var cur_val = input.value.toLowerCase()
                 .replace(/[àáâãä]/g, "a")
@@ -216,7 +323,7 @@
             console.info("|"+cur_val + "|");
 
             var input_words = [];
-            var cur_val_split = cur_val.split(" ");
+            var cur_val_split = uniq(cur_val.split(" "));
             for(var z = 0; z < cur_val_split.length; z++) {
                 if(cur_val_split[z].length > 0)
                     input_words.push(cur_val_split[z])
@@ -228,9 +335,11 @@
             for(var w = 0; w < input_words.length; w++) {
                 for(var i = 0; i < memes.length; i++) {
                     if(memes[i].keywords.indexOf(input_words[w])+1) {
+                        var li = document.createElement("li");
                         var img = document.createElement("img");
-                        img.src = memes[i].src;
-                        list.appendChild(img);
+                        img.src = "./resources/choque/" + memes[i].src;
+                        li.appendChild(img);
+                        list.appendChild(li);
                     }
                 }
             }
